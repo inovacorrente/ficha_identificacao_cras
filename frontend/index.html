@@ -15,215 +15,221 @@
             <h1>FICHA DE IDENTIFICAÇÃO</h1>
             <p>Gerência de Acessibilidade de Inclusão</p>
 
-            <br>
+            <form action="#" method="POST">
 
-            <label for="nome">Nome:</label>
-            <input type="text" id="nome" placeholder="Nome completo">
+              <br>
+
+              <label for="nome">Nome:</label>
+              <input type="text" id="nome" name="nome" placeholder="Nome completo">
+
+              <br><br>
+
+              <label for="telefone">Telefone:</label>
+              <input type="text" id="telefone" name="telefone" placeholder="Número do Telefone">
+
+              <br><br>
+
+              <label for="data-nascimento">Data de Nascimento</label>
+              <input type="date" id="data-nascimento" name="data-nascimento">
+
+              <br><br>
+
+              <label for="sexo">Sexo</label>
+              <select id="sexo" name="sexo">
+                <option value="masculino">Masculino</option> 
+                <option value="feminino">Feminino</option> 
+                <option value="outro">Outro</option> 
+              </select>
+
+              <br><br>
+
+              <label for="cpf">CPF:</label>
+              <input type="text" id="cpf" name="cpf" placeholder="CPF">
+
+              <br><br>
+
+              <label for="data-emissao">Data da Emissão do RG</label>
+              <input type="date" id="data-emissao" name="data-emissao">
+
+              <br><br>
+
+              <label for="orgao-emissor">Órgão Emissor (UF):</label>
+              <select id="orgao-emissor" name="orgao-emissor">
+                <option value="">Selecionar</option>
+                <option value="AC">AC - Acre</option>
+                <option value="AL">AL - Alagoas</option>
+                <option value="AP">AP - Amapá</option>
+                <option value="AM">AM - Amazonas</option>
+                <option value="BA">BA - Bahia</option>
+                <option value="CE">CE - Ceará</option>
+                <option value="DF">DF - Distrito Federal</option>
+                <option value="ES">ES - Espírito Santo</option>
+                <option value="GO">GO - Goiás</option>
+                <option value="MA">MA - Maranhão</option>
+                <option value="MT">MT - Mato Grosso</option>
+                <option value="MS">MS - Mato Grosso do Sul</option>
+                <option value="MG">MG - Minas Gerais</option>
+                <option value="PA">PA - Pará</option>
+                <option value="PB">PB - Paraíba</option>
+                <option value="PR">PR - Paraná</option>
+                <option value="PE">PE - Pernambuco</option>
+                <option value="PI">PI - Piauí</option>
+                <option value="RJ">RJ - Rio de Janeiro</option>
+                <option value="RN">RN - Rio Grande do Norte</option>
+                <option value="RS">RS - Rio Grande do Sul</option>
+                <option value="RO">RO - Rondônia</option>
+                <option value="RR">RR - Roraima</option>
+                <option value="SC">SC - Santa Catarina</option>
+                <option value="SP">SP - São Paulo</option>
+                <option value="SE">SE - Sergipe</option>
+                <option value="TO">TO - Tocantins</option>
+              </select>
+              
+              <br><br>
+
+              <label for="endereco">Endereço:</label>
+              <input type="text" id="endereco" name="endereco" placeholder="Casa, Quadra">
+
+              <br><br>
+
+              <label for="bairro">Bairro:</label>
+              <input type="text" id="bairro" name="bairro" placeholder="Bairro">
+
+              <br><br>
+
+              <label for="referencia">Ponto de Referencia:</label>
+              <input type="text" id="referencia" name="referencia" placeholder="Localização Próxima">
+
+              <br><br>
+
+              <label for="estado-civil">Estado Civil:</label>
+              <select id="estado-civil" name="estado-civil">
+                <option value="solteiro">Solteiro</option>
+                <option value="casado">Casado</option>
+                <option value="separado">Separado</option>
+                <option value="divorciado">Divorciado</option>
+                <option value="uniao-estavel">União Estável</option>
+                <option value="viuvo">Viúvo</option>
+              </select>
+
+              <br><br>
+
+              <label for="mae">Filiação - Mãe:</label>
+              <input type="text" id="mae" name="mae" placeholder="Nome da Mãe">
+
+              <br><br>
+
+              <label for="pai">Filiação - Pai:</label>
+              <input type="text" id="pai" name="pai" placeholder="Nome do Pai">
+
+              <br><br>
+
+              <label for="nivel-formacao">Nível de Formação:</label>
+              <select id="nivel-formacao" name="nivel-formacao">
+                <option value="sem-formacao">Não Alfabetizado</option>
+                <option value="ef-incompleto">Fundamental Incompleto</option>
+                <option value="ef-completo">Fundamental Completo</option>
+                <option value="em-incompleto">Ensino Médio Incompleto</option>
+                <option value="em-completo">Ensino Médio Completo</option>
+                <option value="es-incompleto">Ensino Superior Incompleto</option>
+                <option value="es-completo">Ensino Superior Completo</option>
+              </select>
+
+              <br><br>
+
+              <label for="profissao">Profissão:</label>
+              <input type="text" id="profissao" name="profissao" placeholder="Profissão atual">
+
+              <br><br>
+
+              <label for="renda">Renda:</label>
+              <input type="number" id="renda" name="renda" placeholder="R$0.00" step="0.01" min "0">
+
+              <br><br>
+
+              <label for="deficiente">Possui Deficiência?</label>
+              <select id="deficiente" name="deficiente">
+                <option value="def-nao">Não, não possuo.</option>
+                <option value="def-sim">Sim, possuo.</option>
+              </select>
+
+              <br><br>
+
+              <label for="deficiencia">Se sim, Qual?</label>
+              <input type="text" id="deficiencia" name="deficiencia">
+
+              <br><br>
+
+              <label for="familia-cad-unico">Sua família está cadastrada no CAD ÚNICO?</label>
+              <select id="familia-cad-unico" name="familia-cad-unico">
+                <option value="">Selecionar</option>
+                <option value="fam-sim">Sim, está.</option>
+                <option value="fam-nao">Não, não está.</option>
+              </select>
+
+              <br><br>
+
+              <label for="beneficio-social">Benefício Social:</label>
+              <select id="beneficio-social-cad-unico" name="beneficio-social-cad-unico">
+                <option value="nao-recebe">Nenhum</option>
+                <option value="bolsafamilia">Bolsa Família</option>
+                <option value="bpc">BPC</option>
+                <option value="aux-incapacidade-temp">Auxílio por Incapacidade Temporária</option>
+                <option value="aux-incapacidade-perm">Auxílio por Incapacidade Permanente</option>
+              </select>
+
+              <br><br>
+
+              <label for="aposentadoria">É aposentado?</label>
+              <select id="aposentadoria" name="aposentadoria">
+                <option value="nao-aposentado">Não, não sou aposetado/a.</option>
+                <option value="aposentado">Sim, sou aposetado/a.</option>
+              </select>
+
+              <br><br>
+
+              <label for="passe-intermunicipal">Possui Passe Inter-municipal?</label>
+              <select id="passe-intermunicipal" name="passe-intermunicipal">
+                <option value="pim-nao">Não, não possuo.</option>
+                <option value="pim-sim">Sim, possuo.</option>
+              </select>
+
+              <br><br>
+
+              <label for="passe-interestadual">Possui Passe Inter-estadual?</label>
+              <select id="passe-interestadual" name="passe-interestadual">
+                <option value="pie-nao">Não, não possuo.</option>
+                <option value="pie-sim">Sim, possuo.</option>
+              </select>
+
+              <br><br>
+
+              <label for="carteira-autista">Possui carteira de autista?</label>
+              <select id="carteira-autista" name="carteira-autista">
+                <option value="carteira-autista-nao">Não, não possuo.</option>
+                <option value="carteira-autista-sim">Sim, possuo.</option>
+              </select>
+
+              <br><br>
+
+              <label for="laudo">Possui Laudo Médico?</label>
+              <select id="laudo" name="laudo">
+                <option value="laudo-nao">Não, não possuo.</option>
+                <option value="laudo-sim">sim, não possuo.</option>
+              </select>
+
+              <br><br>
+
+              <label for="observacao">Observações do Laudo, caso possua:</label>
+              <input type="text" id="observacao" name="observacao">
 
             <br><br>
 
-            <label for="telefone">Telefone:</label>
-            <input type="text" id="telefone" placeholder="Número do Telefone">
+            <button type="submit">Enviar Todos os Dados</button>
 
-            <br><br>
+            </form> 
 
-            <label for="data-nascimento">Data de Nascimento</label>
-            <input type="date" id="data-nascimento" name="data-nascimento">
-
-            <br><br>
-
-            <label for="sexo">Sexo</label>
-            <select id="sexo" name="sexo">
-              <option value="masculino">Masculino</option> 
-              <option value="feminino">Feminino</option> 
-              <option value="outro">Outro</option> 
-            </select>
-
-            <br><br>
-
-            <label for="cpf">CPF:</label>
-            <input type="text" id="cpf" placeholder="CPF">
-
-            <br><br>
-
-            <label for="data-emissao">Data da Emissão do RG</label>
-            <input type="date" id="data-emissao" name="data-emissao">
-
-            <br><br>
-
-            <label for="orgao-emissor">Órgão Emissor (UF):</label>
-            <select id="orgao-emissor" name="orgao-emissor">
-              <option value="">Selecionar</option>
-              <option value="AC">AC - Acre</option>
-              <option value="AL">AL - Alagoas</option>
-              <option value="AP">AP - Amapá</option>
-              <option value="AM">AM - Amazonas</option>
-              <option value="BA">BA - Bahia</option>
-              <option value="CE">CE - Ceará</option>
-              <option value="DF">DF - Distrito Federal</option>
-              <option value="ES">ES - Espírito Santo</option>
-              <option value="GO">GO - Goiás</option>
-              <option value="MA">MA - Maranhão</option>
-              <option value="MT">MT - Mato Grosso</option>
-              <option value="MS">MS - Mato Grosso do Sul</option>
-              <option value="MG">MG - Minas Gerais</option>
-              <option value="PA">PA - Pará</option>
-              <option value="PB">PB - Paraíba</option>
-              <option value="PR">PR - Paraná</option>
-              <option value="PE">PE - Pernambuco</option>
-              <option value="PI">PI - Piauí</option>
-              <option value="RJ">RJ - Rio de Janeiro</option>
-              <option value="RN">RN - Rio Grande do Norte</option>
-              <option value="RS">RS - Rio Grande do Sul</option>
-              <option value="RO">RO - Rondônia</option>
-              <option value="RR">RR - Roraima</option>
-              <option value="SC">SC - Santa Catarina</option>
-              <option value="SP">SP - São Paulo</option>
-              <option value="SE">SE - Sergipe</option>
-              <option value="TO">TO - Tocantins</option>
-            </select>
-            
-            <br><br>
-
-            <label for="endereco">Endereço:</label>
-            <input type="text" id="endereco" placeholder="Casa, Quadra">
-
-            <br><br>
-
-            <label for="bairro">Bairro:</label>
-            <input type="text" id="bairro" placeholder="Bairro">
-
-            <br><br>
-
-            <label for="referencia">Ponto de Referencia:</label>
-            <input type="text" id="referencia" placeholder="Localização Próxima">
-
-            <br><br>
-
-            <label for="estado-civil">Estado Civil:</label>
-            <select id="estado-civil" name="estado-civil">
-              <option value="solteiro">Solteiro</option>
-              <option value="casado">Casado</option>
-              <option value="separado">Separado</option>
-              <option value="divorciado">Divorciado</option>
-              <option value="uniao-estavel">União Estável</option>
-              <option value="viuvo">Viúvo</option>
-            </select>
-
-            <br><br>
-
-            <label for="mae">Filiação - Mãe:</label>
-            <input type="text" id="mae" placeholder="Nome da Mãe">
-
-            <br><br>
-
-            <label for="pai">Filiação - Pai:</label>
-            <input type="text" id="pai" placeholder="Nome do Pai">
-
-            <br><br>
-
-            <label for="nivel-formacao">Nível de Formação:</label>
-            <select id="nivel-formacao" name="nivel-formacao">
-              <option value="sem-formacao">Não Alfabetizado</option>
-              <option value="ef-incompleto">Fundamental Incompleto</option>
-              <option value="ef-completo">Fundamental Completo</option>
-              <option value="em-incompleto">Ensino Médio Incompleto</option>
-              <option value="em-completo">Ensino Médio Completo</option>
-              <option value="es-incompleto">Ensino Superior Incompleto</option>
-              <option value="es-completo">Ensino Superior Completo</option>
-            </select>
-
-            <br><br>
-
-            <label for="profissao">Profissão:</label>
-            <input type="text" id="profissao" placeholder="Profissão atual">
-
-            <br><br>
-
-            <label for="renda">Renda:</label>
-            <input type="number" id="renda" name="renda" placeholder="R$0.00" step="0.01" min "0">
-
-            <br><br>
-
-            <label for="deficiente">Possui Deficiência?</label>
-            <select>
-              <option value="">Selecionar</option>
-              <option value="def-sim">Sim, possuo.</option>
-              <option value="def-nao">Não, não possuo.</option>
-            </select>
-
-            <br><br>
-
-            <label for="deficiencia">Se sim, Qual?</label>
-            <input type="text" id="deficiencia">
-
-            <br><br>
-
-            <label for="familia-cad-unico">Sua família está cadastrada no CAD ÚNICO?</label>
-            <select>
-              <option value="">Selecionar</option>
-              <option value="fam-sim">Sim, está.</option>
-              <option value="fam-nao">Não, não está.</option>
-            </select>
-
-            <br><br>
-
-            <label for="beneficio-social">Benefício Social:</label>
-            <select>
-              <option value="nao-recebe">Nenhum</option>
-              <option value="bolsafamilia">Bolsa Família</option>
-              <option value="bpc">BPC</option>
-              <option value="aux-incapacidade-temp">Auxílio por Incapacidade Temporária</option>
-              <option value="aux-incapacidade-perm">Auxílio por Incapacidade Permanente</option>
-            </select>
-
-            <br><br>
-
-            <label for="aposentadoria">É aposentado?</label>
-            <select>
-              <option value="nao-aposentado">Não, não sou aposetado/a.</option>
-              <option value="aposentado">Sim, sou aposetado/a.</option>
-            </select>
-
-            <br><br>
-
-            <label for="passe-intermunicipal">Possui Passe Inter-municipal?</label>
-            <select>
-              <option value="pim-nao">Não, não possuo.</option>
-              <option value="pim-sim">Sim, possuo.</option>
-            </select>
-
-            <br><br>
-
-            <label for="passe-intermunicipal">Possui Passe Inter-estadual?</label>
-            <select>
-              <option value="pie-nao">Não, não possuo.</option>
-              <option value="pie-sim">Sim, possuo.</option>
-            </select>
-
-            <br><br>
-
-            <label for="carteira-autista">Possui carteira de autista?</label>
-            <select>
-              <option value="carteira-autista-nao">Não, não possuo.</option>
-              <option value="carteira-autista-sim">Sim, possuo.</option>
-            </select>
-
-            <br><br>
-
-            <label for="laudo">Possui Laudo Médico?</label>
-            <select>
-              <option value="laudo-nao">Não, não possuo.</option>
-              <option value="laudo-sim">sim, não possuo.</option>
-            </select>
-
-            <br><br>
-
-            <label for="observacao">Observações do Laudo, caso possua:</label>
-            <input type="text" id="observacao">
-
-            <br><br>
-
+            <br><br><br><br>
 
         </div>
 
