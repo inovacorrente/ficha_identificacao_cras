@@ -1,28 +1,324 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ficha de identificação CRAS</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="stylesheet" href="assets/css/bootstrap/bootstrap.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ficha de identificação CRAS</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+  <link rel="stylesheet" href="assets/css/bootstrap/bootstrap.min.css" />
 </head>
 
 <body>
-    <div class="container mt-5">
-        <div class="text-center mb-4">
-            <h1>Hello Word</h1>
-        </div>
-
+  <div class="container mt-5">
+    <div class="text-center mb-4">
+      <h1>FICHA DE IDENTIFICAÇÃO</h1>
+      <p>Gerência de Acessibilidade de Inclusão</p>
     </div>
 
-</body>
-<footer>
-    <div class="container text-center">
-        <p>&copy; 2025 Ficha de identificação CRAS. Todos os direitos reservados.</p>
-</footer>
+    <form action="#" method="POST" novalidate>
+      <!-- Dados Pessoais -->
+      <fieldset class="mb-4 border p-3 rounded">
+        <legend class="float-none w-auto px-2">Dados Pessoais</legend>
 
-<script src="assets/js/bootstrap/bootstrap.bundle.min.js"></script>
+        <div class="mb-3">
+          <label for="nome" class="form-label">Nome:</label>
+          <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome completo" required />
+          <div class="invalid-feedback">Por favor, informe seu nome.</div>
+        </div>
+
+        <div class="mb-3">
+          <label for="telefone" class="form-label">Telefone:</label>
+          <input type="tel" class="form-control" id="telefone" name="telefone" placeholder="Número do Telefone" required />
+          <div class="invalid-feedback">Por favor, informe um telefone válido.</div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="data-nascimento" class="form-label">Data de Nascimento:</label>
+            <input type="date" class="form-control" id="data-nascimento" name="data-nascimento" required />
+            <div class="invalid-feedback">Informe sua data de nascimento.</div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label for="sexo" class="form-label">Sexo:</label>
+            <select class="form-select" id="sexo" name="sexo" required>
+              <option value="" selected disabled>Selecione</option>
+              <option value="masculino">Masculino</option>
+              <option value="feminino">Feminino</option>
+              <option value="outro">Outro</option>
+            </select>
+            <div class="invalid-feedback">Selecione seu sexo.</div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="cpf" class="form-label">CPF:</label>
+          <input type="text" class="form-control" id="cpf" name="cpf" placeholder="CPF" required pattern="\d{11}" />
+          <div class="invalid-feedback">Informe um CPF válido (somente números, 11 dígitos).</div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="data-emissao" class="form-label">Data da Emissão do RG:</label>
+            <input type="date" class="form-control" id="data-emissao" name="data-emissao" required />
+            <div class="invalid-feedback">Informe a data de emissão do RG.</div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label for="orgao-emissor" class="form-label">Órgão Emissor (UF):</label>
+            <select class="form-select" id="orgao-emissor" name="orgao-emissor" required>
+              <option value="" selected disabled>Selecionar</option>
+              <option value="AC">AC - Acre</option>
+              <option value="AL">AL - Alagoas</option>
+              <option value="AP">AP - Amapá</option>
+              <option value="AM">AM - Amazonas</option>
+              <option value="BA">BA - Bahia</option>
+              <option value="CE">CE - Ceará</option>
+              <option value="DF">DF - Distrito Federal</option>
+              <option value="ES">ES - Espírito Santo</option>
+              <option value="GO">GO - Goiás</option>
+              <option value="MA">MA - Maranhão</option>
+              <option value="MT">MT - Mato Grosso</option>
+              <option value="MS">MS - Mato Grosso do Sul</option>
+              <option value="MG">MG - Minas Gerais</option>
+              <option value="PA">PA - Pará</option>
+              <option value="PB">PB - Paraíba</option>
+              <option value="PR">PR - Paraná</option>
+              <option value="PE">PE - Pernambuco</option>
+              <option value="PI">PI - Piauí</option>
+              <option value="RJ">RJ - Rio de Janeiro</option>
+              <option value="RN">RN - Rio Grande do Norte</option>
+              <option value="RS">RS - Rio Grande do Sul</option>
+              <option value="RO">RO - Rondônia</option>
+              <option value="RR">RR - Roraima</option>
+              <option value="SC">SC - Santa Catarina</option>
+              <option value="SP">SP - São Paulo</option>
+              <option value="SE">SE - Sergipe</option>
+              <option value="TO">TO - Tocantins</option>
+            </select>
+            <div class="invalid-feedback">Selecione o órgão emissor.</div>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Endereço -->
+      <fieldset class="mb-4 border p-3 rounded">
+        <legend class="float-none w-auto px-2">Endereço</legend>
+
+        <div class="mb-3">
+          <label for="endereco" class="form-label">Endereço:</label>
+          <input type="text" class="form-control" id="endereco" name="endereco" placeholder="Casa, Quadra" required />
+          <div class="invalid-feedback">Informe seu endereço.</div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="bairro" class="form-label">Bairro:</label>
+            <input type="text" class="form-control" id="bairro" name="bairro" placeholder="Bairro" required />
+            <div class="invalid-feedback">Informe o bairro.</div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label for="referencia" class="form-label">Ponto de Referência:</label>
+            <input type="text" class="form-control" id="referencia" name="referencia" placeholder="Localização Próxima" />
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Informações adicionais -->
+      <fieldset class="mb-4 border p-3 rounded">
+        <legend class="float-none w-auto px-2">Informações adicionais</legend>
+
+        <div class="mb-3">
+          <label for="estado-civil" class="form-label">Estado Civil:</label>
+          <select class="form-select" id="estado-civil" name="estado-civil" required>
+            <option value="" selected disabled>Selecionar</option>
+            <option value="solteiro">Solteiro</option>
+            <option value="casado">Casado</option>
+            <option value="separado">Separado</option>
+            <option value="divorciado">Divorciado</option>
+            <option value="uniao-estavel">União Estável</option>
+            <option value="viuvo">Viúvo</option>
+          </select>
+          <div class="invalid-feedback">Informe seu estado civil.</div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="mae" class="form-label">Filiação - Mãe:</label>
+            <input type="text" class="form-control" id="mae" name="mae" placeholder="Nome da Mãe" required />
+            <div class="invalid-feedback">Informe o nome da mãe.</div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label for="pai" class="form-label">Filiação - Pai:</label>
+            <input type="text" class="form-control" id="pai" name="pai" placeholder="Nome do Pai" />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="nivel-formacao" class="form-label">Nível de Formação:</label>
+          <select class="form-select" id="nivel-formacao" name="nivel-formacao" required>
+            <option value="" selected disabled>Selecionar</option>
+            <option value="sem-formacao">Não Alfabetizado</option>
+            <option value="ef-incompleto">Fundamental Incompleto</option>
+            <option value="ef-completo">Fundamental Completo</option>
+            <option value="em-incompleto">Ensino Médio Incompleto</option>
+            <option value="em-completo">Ensino Médio Completo</option>
+            <option value="es-incompleto">Ensino Superior Incompleto</option>
+            <option value="es-completo">Ensino Superior Completo</option>
+          </select>
+          <div class="invalid-feedback">Informe seu nível de formação.</div>
+        </div>
+
+        <div class="mb-3">
+          <label for="profissao" class="form-label">Profissão:</label>
+          <input type="text" class="form-control" id="profissao" name="profissao" placeholder="Profissão atual" />
+        </div>
+
+        <div class="mb-3">
+          <label for="renda" class="form-label">Renda:</label>
+          <input
+            type="number"
+            class="form-control"
+            id="renda"
+            name="renda"
+            placeholder="R$0.00"
+            step="0.01"
+            min="0"
+            required
+          />
+          <div class="invalid-feedback">Informe uma renda válida (não negativa).</div>
+        </div>
+
+        <div class="mb-3">
+          <label for="deficiente" class="form-label">Possui Deficiência?</label>
+          <select class="form-select" id="deficiente" name="deficiente" required>
+            <option value="" selected disabled>Selecionar</option>
+            <option value="def-nao">Não, não possuo.</option>
+            <option value="def-sim">Sim, possuo.</option>
+          </select>
+          <div class="invalid-feedback">Informe se possui deficiência.</div>
+        </div>
+
+        <div class="mb-3">
+          <label for="deficiencia" class="form-label">Se sim, Qual?</label>
+          <input type="text" class="form-control" id="deficiencia" name="deficiencia" />
+        </div>
+
+        <div class="mb-3">
+          <label for="familia-cad-unico" class="form-label">Sua família está cadastrada no CAD ÚNICO?</label>
+          <select class="form-select" id="familia-cad-unico" name="familia-cad-unico" required>
+            <option value="" selected disabled>Selecionar</option>
+            <option value="fam-sim">Sim, está.</option>
+            <option value="fam-nao">Não, não está.</option>
+          </select>
+          <div class="invalid-feedback">Informe o cadastro no CAD ÚNICO.</div>
+        </div>
+
+        <div class="mb-3">
+          <label for="beneficio-social" class="form-label">Benefício Social:</label>
+          <select class="form-select" id="beneficio-social" name="beneficio-social" required>
+            <option value="" selected disabled>Selecionar</option>
+            <option value="nao-recebe">Nenhum</option>
+            <option value="bolsafamilia">Bolsa Família</option>
+            <option value="bpc">BPC</option>
+            <option value="aux-incapacidade-temp">Auxílio por Incapacidade Temporária</option>
+            <option value="aux-incapacidade-perm">Auxílio por Incapacidade Permanente</option>
+          </select>
+          <div class="invalid-feedback">Informe o benefício social.</div>
+        </div>
+
+        <div class="mb-3">
+          <label for="aposentadoria" class="form-label">É aposentado?</label>
+          <select class="form-select" id="aposentadoria" name="aposentadoria" required>
+            <option value="" selected disabled>Selecionar</option>
+            <option value="nao-aposentado">Não, não sou aposentado/a.</option>
+            <option value="aposentado">Sim, sou aposentado/a.</option>
+          </select>
+          <div class="invalid-feedback">Informe sua condição de aposentadoria.</div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="passe-intermunicipal" class="form-label">Possui Passe Inter-municipal?</label>
+            <select class="form-select" id="passe-intermunicipal" name="passe-intermunicipal" required>
+              <option value="" selected disabled>Selecionar</option>
+              <option value="pim-nao">Não, não possuo.</option>
+              <option value="pim-sim">Sim, possuo.</option>
+            </select>
+            <div class="invalid-feedback">Informe sobre Passe Inter-municipal.</div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label for="passe-interestadual" class="form-label">Possui Passe Inter-estadual?</label>
+            <select class="form-select" id="passe-interestadual" name="passe-interestadual" required>
+              <option value="" selected disabled>Selecionar</option>
+              <option value="pie-nao">Não, não possuo.</option>
+              <option value="pie-sim">Sim, possuo.</option>
+            </select>
+            <div class="invalid-feedback">Informe sobre Passe Inter-estadual.</div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="carteira-autista" class="form-label">Possui carteira de autista?</label>
+            <select class="form-select" id="carteira-autista" name="carteira-autista" required>
+              <option value="" selected disabled>Selecionar</option>
+              <option value="carteira-autista-nao">Não, não possuo.</option>
+              <option value="carteira-autista-sim">Sim, possuo.</option>
+            </select>
+            <div class="invalid-feedback">Informe sobre carteira de autista.</div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label for="laudo" class="form-label">Possui Laudo Médico?</label>
+            <select class="form-select" id="laudo" name="laudo" required>
+              <option value="" selected disabled>Selecionar</option>
+              <option value="laudo-nao">Não, não possuo.</option>
+              <option value="laudo-sim">Sim, possuo.</option>
+            </select>
+            <div class="invalid-feedback">Informe sobre laudo médico.</div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="observacao" class="form-label">Observações do Laudo, caso possua:</label>
+          <input type="text" class="form-control" id="observacao" name="observacao" />
+        </div>
+      </fieldset>
+
+      <button type="submit" class="btn btn-primary mb-5">Enviar Todos os Dados</button>
+    </form>
+  </div>
+
+  <footer>
+    <div class="container text-center">
+      <p>&copy; 2025 Ficha de identificação CRAS. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/bootstrap/bootstrap.bundle.min.js"></script>
+
+  <script>
+  (() => {
+    'use strict'
+    const forms = document.querySelectorAll('form')
+
+    Array.from(forms).forEach(form => {
+      form.addEventListener('submit', event => {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+        form.classList.add('was-validated')
+      }, false)
+    })
+  })()
+</script>
+
+</body>
 
 </html>
