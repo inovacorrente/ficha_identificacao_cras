@@ -31,6 +31,25 @@ OPTIONS_FORMACAO = [
     ('Nenhum', 'Nenhum'),
 ]
 
+BENEFICIO_SOCIAL_CHOICES = [
+    ('Bolsa Família', 'Bolsa Família'),
+    ('Auxílio Brasil', 'Auxílio Brasil'),
+    ('BPC - Benefício de Prestação Continuada',
+     'BPC - Benefício de Prestação Continuada'),
+    ('Auxilio por Incapacidade Temporária',
+     'Auxilio por Incapacidade Temporária'),
+
+    ('Auxilio por Incapacidade Permanente',
+     'Auxilio por Incapacidade Permanente'),
+    ('Outro', 'Outro'),
+    ('Nenhum', 'Nenhum'),
+]
+
+OPTION = [
+    ('Sim', 'Sim'),
+    ('Não', 'Não'),
+]
+
 
 class FichaIdentificacao(models.Model):
     # Etapa 1: Dados Pessoais
@@ -62,17 +81,18 @@ class FichaIdentificacao(models.Model):
 
     # Etapa 5: Situação Socioeconômica
     renda = models.DecimalField(max_digits=10, decimal_places=2)
-    deficiente = models.CharField(max_length=10)
+    deficiente = models.CharField(max_length=10, choices=OPTION)
     deficiencia = models.CharField(max_length=255, blank=True, null=True)
-    familia_cad_unico = models.CharField(max_length=10)
-    beneficio_social = models.CharField(max_length=30)
-    aposentadoria = models.CharField(max_length=20)
+    familia_cad_unico = models.CharField(max_length=10, choices=OPTION)
+    beneficio_social = models.CharField(
+        max_length=39, choices=BENEFICIO_SOCIAL_CHOICES, blank=True,)
+    aposentadoria = models.CharField(max_length=20, choices=OPTION)
 
     # Etapa 6: Benefícios e Documentos
-    passe_intermunicipal = models.CharField(max_length=10)
-    passe_interestadual = models.CharField(max_length=10)
-    carteira_autista = models.CharField(max_length=20)
-    laudo = models.CharField(max_length=10)
+    passe_intermunicipal = models.CharField(max_length=10, choices=OPTION)
+    passe_interestadual = models.CharField(max_length=10, choices=OPTION)
+    carteira_autista = models.CharField(max_length=20, choices=OPTION)
+    laudo = models.CharField(max_length=10, choices=OPTION)
     observacao = models.TextField(blank=True, null=True)
 
     def __str__(self):

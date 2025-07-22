@@ -80,6 +80,41 @@ function configurarFormatacao() {
             e.target.value = valor;
         }
     });
+
+    // Formatação da renda mensal
+    const campoRenda = document.getElementById('renda');
+    campoRenda.addEventListener('input', function(e) {
+        let valor = e.target.value.replace(/\D/g, '');
+        if (valor.length === 0) {
+            e.target.value = '';
+            return;
+        }
+        // Garante pelo menos dois dígitos para centavos
+        while (valor.length < 3) {
+            valor = '0' + valor;
+        }
+        let valorNumerico = (parseInt(valor, 10) / 100).toFixed(2);
+        e.target.value = parseFloat(valorNumerico).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    });
+    campoRenda.addEventListener('focus', function(e) {
+        // Remove a formatação para facilitar edição
+        let valor = e.target.value.replace(/[^\d]/g, '');
+        if (valor.length > 0) {
+            e.target.value = (parseInt(valor, 10) / 100).toFixed(2);
+        }
+    });
+    campoRenda.addEventListener('blur', function(e) {
+        let valor = e.target.value.replace(/\D/g, '');
+        if (valor.length === 0) {
+            e.target.value = '';
+            return;
+        }
+        while (valor.length < 3) {
+            valor = '0' + valor;
+        }
+        let valorNumerico = (parseInt(valor, 10) / 100).toFixed(2);
+        e.target.value = parseFloat(valorNumerico).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    });
 }
 
 // Configurar campos condicionais
@@ -87,7 +122,7 @@ function configurarCamposCondicionais() {
     // Campo deficiência
     document.getElementById('deficiente').addEventListener('change', function() {
         const campoDeficiencia = document.getElementById('deficiencia');
-        if (this.value === 'def-sim') {
+        if (this.value === 'Sim') {
             campoDeficiencia.disabled = false;
             campoDeficiencia.required = true;
         } else {
@@ -100,7 +135,7 @@ function configurarCamposCondicionais() {
     // Campo observação do laudo
     document.getElementById('laudo').addEventListener('change', function() {
         const campoObservacao = document.getElementById('observacao');
-        if (this.value === 'laudo-sim') {
+        if (this.value === 'Sim') {
             campoObservacao.disabled = false;
             campoObservacao.required = true;
         } else {
@@ -143,8 +178,9 @@ function validarCampo(campo) {
     } else if (campo.id === 'telefone') {
         valido = validarTelefone(valor);
     } else if (campo.id === 'renda') {
-        // Permitir vírgula ou ponto como separador decimal
-        let valorRenda = valor.replace(',', '.');
+        // Aceitar valor formatado como moeda (ex: 'R$ 1.000,00')
+        let valorRenda = valor.replace(/[^\d,\.]/g, ''); // remove tudo exceto dígitos, vírgula e ponto
+        valorRenda = valorRenda.replace('.', '').replace(',', '.'); // remove separador de milhar, troca vírgula por ponto
         let rendaNum = parseFloat(valorRenda);
         valido = !isNaN(rendaNum) && rendaNum >= 0;
     } else if (campo.id === 'data-emissao') {
@@ -228,7 +264,7 @@ function validarEtapaAtual() {
     if (etapaAtual === 6) {
         const campoLaudo = document.getElementById('laudo');
         const campoObservacao = document.getElementById('observacao');
-        if (campoLaudo && campoLaudo.value === 'laudo-sim' && campoObservacao) {
+        if (campoLaudo && campoLaudo.value === 'Sim' && campoObservacao) {
             if (campoObservacao.value.trim() === '') {
                 campoObservacao.classList.add('is-invalid');
                 etapaValida = false;
@@ -253,7 +289,13 @@ function proximaEtapa() {
             mostrarErrosValidacao();
         }
     } else {
-        // Última etapa - enviar formulário direto
+        // Última etapa - preparar campo renda para envio
+        const campoRenda = document.getElementById('renda');
+        if (campoRenda) {
+            let valor = campoRenda.value.replace(/[^\d,\.]/g, '');
+            valor = valor.replace('.', '').replace(',', '.');
+            campoRenda.value = valor;
+        }
         document.getElementById('formulario-cras').submit();
     }
 }

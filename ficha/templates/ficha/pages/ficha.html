@@ -84,9 +84,9 @@
                                     <label for="sexo" class="form-label">Sexo *</label>
                                     <select class="form-select" id="sexo" name="sexo" required>
                                         <option value="" selected disabled>Selecione</option>
-                                        <option value="masculino">Masculino</option>
-                                        <option value="feminino">Feminino</option>
-                                        <option value="outro">Outro</option>
+                                        <option value="Masculino">Masculino</option>
+                                        <option value="Feminino">Feminino</option>
+                                        <option value="Outro">Outro</option>
                                     </select>
                                     <div class="invalid-feedback">Selecione seu sexo.</div>
                                 </div>
@@ -207,12 +207,11 @@
                                     <label for="estado-civil" class="form-label">Estado Civil *</label>
                                     <select class="form-select" id="estado-civil" name="estado-civil" required>
                                         <option value="" selected disabled>Selecionar</option>
-                                        <option value="solteiro">Solteiro(a)</option>
-                                        <option value="casado">Casado(a)</option>
-                                        <option value="separado">Separado(a)</option>
-                                        <option value="divorciado">Divorciado(a)</option>
-                                        <option value="uniao-estavel">União Estável</option>
-                                        <option value="viuvo">Viúvo(a)</option>
+                                        <option value="Solteiro(a)">Solteiro(a)</option>
+                                        <option value="Casado(a)">Casado(a)</option>
+                                        <option value="Divorciado(a)">Divorciado(a)</option>
+                                        <option value="Viúvo(a)">Viúvo(a)</option>
+                                        <option value="União Estável">União Estável</option>
                                     </select>
                                     <div class="invalid-feedback">Informe seu estado civil.</div>
                                 </div>
@@ -230,13 +229,19 @@
                                     <label for="nivel-formacao" class="form-label">Nível de Formação *</label>
                                     <select class="form-select" id="nivel-formacao" name="nivel-formacao" required>
                                         <option value="" selected disabled>Selecionar</option>
-                                        <option value="sem-formacao">Não Alfabetizado</option>
-                                        <option value="ef-incompleto">Fundamental Incompleto</option>
-                                        <option value="ef-completo">Fundamental Completo</option>
-                                        <option value="em-incompleto">Ensino Médio Incompleto</option>
-                                        <option value="em-completo">Ensino Médio Completo</option>
-                                        <option value="es-incompleto">Ensino Superior Incompleto</option>
-                                        <option value="es-completo">Ensino Superior Completo</option>
+                                        <option value="Ensino Fundamental Incompleto">Ensino Fundamental Incompleto</option>
+                                        <option value="Ensino Fundamental Completo">Ensino Fundamental Completo</option>
+                                        <option value="Ensino Médio Incompleto">Ensino Médio Incompleto</option>
+                                        <option value="Ensino Médio Completo">Ensino Médio Completo</option>
+                                        <option value="Ensino Superior Incompleto">Ensino Superior Incompleto</option>
+                                        <option value="Ensino Superior Completo">Ensino Superior Completo</option>
+                                        <option value="Pós-Graduação Incompleta">Pós-Graduação Incompleta</option>
+                                        <option value="Pós-Graduação Completa">Pós-Graduação Completa</option>
+                                        <option value="Mestrado Incompleto">Mestrado Incompleto</option>
+                                        <option value="Mestrado Completo">Mestrado Completo</option>
+                                        <option value="Doutorado Incompleto">Doutorado Incompleto</option>
+                                        <option value="Doutorado Completo">Doutorado Completo</option>
+                                        <option value="Nenhum">Nenhum</option>
                                     </select>
                                     <div class="invalid-feedback">Informe seu nível de formação.</div>
                                 </div>
@@ -263,7 +268,7 @@
                             <div class="row g-3">
                                 <div class="col-12">
                                     <label for="renda" class="form-label">Renda Mensal (R$) *</label>
-                                    <input type="number" class="form-control" id="renda" name="renda" placeholder="0,00" step="0.01" min="0" required>
+                                    <input type="text" class="form-control" id="renda" name="renda" placeholder="0,00" step="0.01" min="0" required>
                                     <div class="invalid-feedback">Informe uma renda válida (não negativa).</div>
                                     <div class="form-text">Informe sua renda mensal total. Se não tiver renda, digite 0.</div>
                                 </div>
@@ -271,8 +276,8 @@
                                     <label for="deficiente" class="form-label">Possui Deficiência? *</label>
                                     <select class="form-select" id="deficiente" name="deficiente" required>
                                         <option value="" selected disabled>Selecionar</option>
-                                        <option value="def-nao">Não, não possuo.</option>
-                                        <option value="def-sim">Sim, possuo.</option>
+                                        <option value="Não">Não</option>
+                                        <option value="Sim">Sim</option>
                                     </select>
                                     <div class="invalid-feedback">Informe se possui deficiência.</div>
                                 </div>
@@ -285,8 +290,8 @@
                                     <label for="familia-cad-unico" class="form-label">Sua família está cadastrada no CAD ÚNICO? *</label>
                                     <select class="form-select" id="familia-cad-unico" name="familia-cad-unico" required>
                                         <option value="" selected disabled>Selecionar</option>
-                                        <option value="fam-sim">Sim, está.</option>
-                                        <option value="fam-nao">Não, não está.</option>
+                                        <option value="Sim">Sim</option>
+                                        <option value="Não">Não</option>
                                     </select>
                                     <div class="invalid-feedback">Informe o cadastro no CAD ÚNICO.</div>
                                 </div>
@@ -294,11 +299,13 @@
                                     <label for="beneficio-social" class="form-label">Benefício Social *</label>
                                     <select class="form-select" id="beneficio-social" name="beneficio-social" required>
                                         <option value="" selected disabled>Selecionar</option>
-                                        <option value="nao-recebe">Nenhum</option>
-                                        <option value="bolsafamilia">Bolsa Família</option>
-                                        <option value="bpc">BPC</option>
-                                        <option value="aux-incapacidade-temp">Auxílio por Incapacidade Temporária</option>
-                                        <option value="aux-incapacidade-perm">Auxílio por Incapacidade Permanente</option>
+                                        <option value="Bolsa Família">Bolsa Família</option>
+                                        <option value="Auxílio Brasil">Auxílio Brasil</option>
+                                        <option value="BPC - Benefício de Prestação Continuada">BPC - Benefício de Prestação Continuada</option>
+                                        <option value="Auxilio por Incapacidade Temporária">Auxilio por Incapacidade Temporária</option>
+                                        <option value="Auxilio por Incapacidade Permanente">Auxilio por Incapacidade Permanente</option>
+                                        <option value="Outro">Outro</option>
+                                        <option value="Nenhum">Nenhum</option>
                                     </select>
                                     <div class="invalid-feedback">Informe o benefício social.</div>
                                 </div>
@@ -306,8 +313,8 @@
                                     <label for="aposentadoria" class="form-label">É aposentado? *</label>
                                     <select class="form-select" id="aposentadoria" name="aposentadoria" required>
                                         <option value="" selected disabled>Selecionar</option>
-                                        <option value="nao-aposentado">Não, não sou aposentado/a.</option>
-                                        <option value="aposentado">Sim, sou aposentado/a.</option>
+                                        <option value="Não">Não</option>
+                                        <option value="Sim">Sim</option>
                                     </select>
                                     <div class="invalid-feedback">Informe sua condição de aposentadoria.</div>
                                 </div>
@@ -331,8 +338,8 @@
                                     <label for="passe-intermunicipal" class="form-label">Possui Passe Inter-municipal? *</label>
                                     <select class="form-select" id="passe-intermunicipal" name="passe-intermunicipal" required>
                                         <option value="" selected disabled>Selecionar</option>
-                                        <option value="pim-nao">Não, não possuo.</option>
-                                        <option value="pim-sim">Sim, possuo.</option>
+                                        <option value="Não">Não</option>
+                                        <option value="Sim">Sim</option>
                                     </select>
                                     <div class="invalid-feedback">Informe sobre Passe Inter-municipal.</div>
                                 </div>
@@ -340,8 +347,8 @@
                                     <label for="passe-interestadual" class="form-label">Possui Passe Inter-estadual? *</label>
                                     <select class="form-select" id="passe-interestadual" name="passe-interestadual" required>
                                         <option value="" selected disabled>Selecionar</option>
-                                        <option value="pie-nao">Não, não possuo.</option>
-                                        <option value="pie-sim">Sim, possuo.</option>
+                                        <option value="Não">Não</option>
+                                        <option value="Sim">Sim</option>
                                     </select>
                                     <div class="invalid-feedback">Informe sobre Passe Inter-estadual.</div>
                                 </div>
@@ -349,8 +356,8 @@
                                     <label for="carteira-autista" class="form-label">Possui carteira de autista? *</label>
                                     <select class="form-select" id="carteira-autista" name="carteira-autista" required>
                                         <option value="" selected disabled>Selecionar</option>
-                                        <option value="carteira-autista-nao">Não, não possuo.</option>
-                                        <option value="carteira-autista-sim">Sim, possuo.</option>
+                                        <option value="Não">Não</option>
+                                        <option value="Sim">Sim</option>
                                     </select>
                                     <div class="invalid-feedback">Informe sobre carteira de autista.</div>
                                 </div>
@@ -358,8 +365,8 @@
                                     <label for="laudo" class="form-label">Possui Laudo Médico? *</label>
                                     <select class="form-select" id="laudo" name="laudo" required>
                                         <option value="" selected disabled>Selecionar</option>
-                                        <option value="laudo-nao">Não, não possuo.</option>
-                                        <option value="laudo-sim">Sim, possuo.</option>
+                                        <option value="Não">Não</option>
+                                        <option value="Sim">Sim</option>
                                     </select>
                                     <div class="invalid-feedback">Informe sobre laudo médico.</div>
                                 </div>
