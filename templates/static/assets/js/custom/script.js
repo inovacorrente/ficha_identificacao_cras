@@ -5,10 +5,9 @@ let dadosFormulario = {};
 
 // Inicialização
 document.addEventListener('DOMContentLoaded', function() {
-    // Se existe mensagem de sucesso, limpa localStorage e reseta formulário
-    if (document.getElementById('mensagem-sucesso')) {
+    // Se está na página de sucesso, limpa localStorage
+    if (window.location.pathname === '/sucesso/') {
         localStorage.removeItem('formulario-cras-dados');
-        document.getElementById('formulario-cras').reset();
     }
     carregarDadosSalvos();
     configurarEventListeners();
