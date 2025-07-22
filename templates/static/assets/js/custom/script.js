@@ -5,6 +5,11 @@ let dadosFormulario = {};
 
 // Inicialização
 document.addEventListener('DOMContentLoaded', function() {
+    // Se existe mensagem de sucesso, limpa localStorage e reseta formulário
+    if (document.getElementById('mensagem-sucesso')) {
+        localStorage.removeItem('formulario-cras-dados');
+        document.getElementById('formulario-cras').reset();
+    }
     carregarDadosSalvos();
     configurarEventListeners();
     atualizarInterface();
@@ -33,8 +38,10 @@ function preencherFormulario() {
 // Configurar event listeners
 function configurarEventListeners() {
     // Botões de navegação
-    document.getElementById('btn-anterior').addEventListener('click', etapaAnterior);
-    document.getElementById('btn-proximo').addEventListener('click', proximaEtapa);
+    const btnAnterior = document.getElementById('btn-anterior');
+    if (btnAnterior) btnAnterior.addEventListener('click', etapaAnterior);
+    const btnProximo = document.getElementById('btn-proximo');
+    if (btnProximo) btnProximo.addEventListener('click', proximaEtapa);
     
     // Botões de etapa
     document.querySelectorAll('.btn-etapa').forEach(btn => {
@@ -60,90 +67,108 @@ function configurarEventListeners() {
 // Configurar formatação de campos
 function configurarFormatacao() {
     // Formatação do CPF
-    document.getElementById('cpf').addEventListener('input', function(e) {
-        let valor = e.target.value.replace(/\D/g, '');
-        if (valor.length <= 11) {
-            valor = valor.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
-            e.target.value = valor;
-        }
-    });
-    
-    // Formatação do telefone
-    document.getElementById('telefone').addEventListener('input', function(e) {
-        let valor = e.target.value.replace(/\D/g, '');
-        if (valor.length <= 11) {
-            if (valor.length === 11) {
-                valor = valor.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
-            } else if (valor.length === 10) {
-                valor = valor.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
+    const campoCPF = document.getElementById('cpf');
+    if (campoCPF) {
+        campoCPF.addEventListener('input', function(e) {
+            let valor = e.target.value.replace(/\D/g, '');
+            if (valor.length <= 11) {
+                valor = valor.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+                e.target.value = valor;
             }
-            e.target.value = valor;
-        }
-    });
+        });
+    }
+
+    // Formatação do telefone
+    const campoTelefone = document.getElementById('telefone');
+    if (campoTelefone) {
+        campoTelefone.addEventListener('input', function(e) {
+            let valor = e.target.value.replace(/\D/g, '');
+            if (valor.length <= 11) {
+                if (valor.length === 11) {
+                    valor = valor.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+                } else if (valor.length === 10) {
+                    valor = valor.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
+                }
+                e.target.value = valor;
+            }
+        });
+    }
 
     // Formatação da renda mensal
     const campoRenda = document.getElementById('renda');
-    campoRenda.addEventListener('input', function(e) {
-        let valor = e.target.value.replace(/\D/g, '');
-        if (valor.length === 0) {
-            e.target.value = '';
-            return;
-        }
-        // Garante pelo menos dois dígitos para centavos
-        while (valor.length < 3) {
-            valor = '0' + valor;
-        }
-        let valorNumerico = (parseInt(valor, 10) / 100).toFixed(2);
-        e.target.value = parseFloat(valorNumerico).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-    });
-    campoRenda.addEventListener('focus', function(e) {
-        // Remove a formatação para facilitar edição
-        let valor = e.target.value.replace(/[^\d]/g, '');
-        if (valor.length > 0) {
-            e.target.value = (parseInt(valor, 10) / 100).toFixed(2);
-        }
-    });
-    campoRenda.addEventListener('blur', function(e) {
-        let valor = e.target.value.replace(/\D/g, '');
-        if (valor.length === 0) {
-            e.target.value = '';
-            return;
-        }
-        while (valor.length < 3) {
-            valor = '0' + valor;
-        }
-        let valorNumerico = (parseInt(valor, 10) / 100).toFixed(2);
-        e.target.value = parseFloat(valorNumerico).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-    });
+    if (campoRenda) {
+        campoRenda.addEventListener('input', function(e) {
+            let valor = e.target.value.replace(/\D/g, '');
+            if (valor.length === 0) {
+                e.target.value = '';
+                return;
+            }
+            // Garante pelo menos dois dígitos para centavos
+            while (valor.length < 3) {
+                valor = '0' + valor;
+            }
+            let valorNumerico = (parseInt(valor, 10) / 100).toFixed(2);
+            e.target.value = parseFloat(valorNumerico).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        });
+        campoRenda.addEventListener('focus', function(e) {
+            // Remove a formatação para facilitar edição
+            let valor = e.target.value.replace(/[^\d]/g, '');
+            if (valor.length > 0) {
+                e.target.value = (parseInt(valor, 10) / 100).toFixed(2);
+            }
+        });
+        campoRenda.addEventListener('blur', function(e) {
+            let valor = e.target.value.replace(/\D/g, '');
+            if (valor.length === 0) {
+                e.target.value = '';
+                return;
+            }
+            while (valor.length < 3) {
+                valor = '0' + valor;
+            }
+            let valorNumerico = (parseInt(valor, 10) / 100).toFixed(2);
+            e.target.value = parseFloat(valorNumerico).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        });
+    }
 }
 
 // Configurar campos condicionais
 function configurarCamposCondicionais() {
     // Campo deficiência
-    document.getElementById('deficiente').addEventListener('change', function() {
-        const campoDeficiencia = document.getElementById('deficiencia');
-        if (this.value === 'Sim') {
-            campoDeficiencia.disabled = false;
-            campoDeficiencia.required = true;
-        } else {
-            campoDeficiencia.disabled = true;
-            campoDeficiencia.required = false;
-            campoDeficiencia.value = '';
-        }
-    });
+    const campoDeficiente = document.getElementById('deficiente');
+    if (campoDeficiente) {
+        campoDeficiente.addEventListener('change', function() {
+            const campoDeficiencia = document.getElementById('deficiencia');
+            if (campoDeficiencia) {
+                if (this.value === 'Sim') {
+                    campoDeficiencia.disabled = false;
+                    campoDeficiencia.required = true;
+                } else {
+                    campoDeficiencia.disabled = true;
+                    campoDeficiencia.required = false;
+                    campoDeficiencia.value = '';
+                }
+            }
+        });
+    }
     
     // Campo observação do laudo
-    document.getElementById('laudo').addEventListener('change', function() {
-        const campoObservacao = document.getElementById('observacao');
-        if (this.value === 'Sim') {
-            campoObservacao.disabled = false;
-            campoObservacao.required = true;
-        } else {
-            campoObservacao.disabled = true;
-            campoObservacao.required = false;
-            campoObservacao.value = '';
-        }
-    });
+    const campoLaudo = document.getElementById('laudo');
+    if (campoLaudo) {
+        campoLaudo.addEventListener('change', function() {
+            const campoObservacao = document.getElementById('observacao');
+            if (campoObservacao) {
+                if (this.value === 'Sim') {
+                    campoObservacao.disabled = false;
+                    campoObservacao.required = true;
+                } else {
+                    campoObservacao.disabled = true;
+                    campoObservacao.required = false;
+                    campoObservacao.value = '';
+                }
+            }
+        });
+    }
 }
 
 // Salvar dados no localStorage
@@ -296,6 +321,7 @@ function proximaEtapa() {
             valor = valor.replace('.', '').replace(',', '.');
             campoRenda.value = valor;
         }
+        // Apenas submete o formulário, sem limpar antes
         document.getElementById('formulario-cras').submit();
     }
 }
@@ -338,13 +364,17 @@ function atualizarInterface() {
     }
     
     // Atualizar indicadores
-    document.getElementById('etapa-atual').textContent = etapaAtual;
-    document.getElementById('total-etapas').textContent = totalEtapas;
-    
+    const elEtapaAtual = document.getElementById('etapa-atual');
+    if (elEtapaAtual) elEtapaAtual.textContent = etapaAtual;
+    const elTotalEtapas = document.getElementById('total-etapas');
+    if (elTotalEtapas) elTotalEtapas.textContent = totalEtapas;
+
     // Atualizar barra de progresso
     const progresso = (etapaAtual / totalEtapas) * 100;
-    document.getElementById('barra-progresso').style.width = `${progresso}%`;
-    document.getElementById('progresso-percent').textContent = Math.round(progresso);
+    const elBarraProgresso = document.getElementById('barra-progresso');
+    if (elBarraProgresso) elBarraProgresso.style.width = `${progresso}%`;
+    const elProgressoPercent = document.getElementById('progresso-percent');
+    if (elProgressoPercent) elProgressoPercent.textContent = Math.round(progresso);
     
     // Atualizar botões de etapa
     document.querySelectorAll('.btn-etapa').forEach(btn => {
@@ -358,12 +388,14 @@ function atualizarInterface() {
     const btnAnterior = document.getElementById('btn-anterior');
     const btnProximo = document.getElementById('btn-proximo');
     
-    btnAnterior.disabled = etapaAtual === 1;
+    if (btnAnterior) btnAnterior.disabled = etapaAtual === 1;
     
-    if (etapaAtual === totalEtapas) {
-        btnProximo.innerHTML = 'Revisar Dados<i class="fas fa-clipboard-check ms-2"></i>';
-    } else {
-        btnProximo.innerHTML = 'Próximo<i class="fas fa-chevron-right ms-2"></i>';
+    if (btnProximo) {
+        if (etapaAtual === totalEtapas) {
+            btnProximo.innerHTML = 'Revisar Dados<i class="fas fa-clipboard-check ms-2"></i>';
+        } else {
+            btnProximo.innerHTML = 'Próximo<i class="fas fa-chevron-right ms-2"></i>';
+        }
     }
 }
 
