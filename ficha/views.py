@@ -2,7 +2,9 @@ from django.shortcuts import render
 
 # Create your views here.
 
-from django.http import HttpResponse
 
-def home(request):
-    return HttpResponse("Hello, world!")
+def ficha_view(request):
+    """
+    Redenrizando a pagina de ficha de identificação do CRAS.
+    """
+    return render(request, 'ficha/pages/ficha.html')
