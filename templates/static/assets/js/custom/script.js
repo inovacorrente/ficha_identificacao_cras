@@ -253,8 +253,8 @@ function proximaEtapa() {
             mostrarErrosValidacao();
         }
     } else {
-        // Última etapa - mostrar resumo
-        mostrarResumo();
+        // Última etapa - enviar formulário direto
+        document.getElementById('formulario-cras').submit();
     }
 }
 
@@ -339,130 +339,6 @@ function mostrarErrosValidacao() {
 }
 
 // Mostrar resumo dos dados
-function mostrarResumo() {
-    if (!validarEtapaAtual()) {
-        mostrarErrosValidacao();
-        return;
-    }
-    
-    salvarDados();
-    const conteudoResumo = document.getElementById('conteudo-resumo');
-    
-    // Mapear valores para labels legíveis
-    const mapeamentos = {
-        sexo: { 'masculino': 'Masculino', 'feminino': 'Feminino', 'outro': 'Outro' },
-        'estado-civil': {
-            'solteiro': 'Solteiro(a)', 'casado': 'Casado(a)', 'separado': 'Separado(a)',
-            'divorciado': 'Divorciado(a)', 'uniao-estavel': 'União Estável', 'viuvo': 'Viúvo(a)'
-        },
-        'nivel-formacao': {
-            'sem-formacao': 'Não Alfabetizado', 'ef-incompleto': 'Fundamental Incompleto',
-            'ef-completo': 'Fundamental Completo', 'em-incompleto': 'Ensino Médio Incompleto',
-            'em-completo': 'Ensino Médio Completo', 'es-incompleto': 'Ensino Superior Incompleto',
-            'es-completo': 'Ensino Superior Completo'
-        },
-        'beneficio-social': {
-            'nao-recebe': 'Nenhum', 'bolsafamilia': 'Bolsa Família', 'bpc': 'BPC',
-            'aux-incapacidade-temp': 'Auxílio por Incapacidade Temporária',
-            'aux-incapacidade-perm': 'Auxílio por Incapacidade Permanente'
-        }
-    };
-    
-    // Gerar HTML do resumo
-    let html = `
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card mb-3">
-                    <div class="card-header bg-primary text-white">
-                        <h6 class="mb-0"><i class="fas fa-user me-2"></i>Dados Pessoais</h6>
-                    </div>
-                    <div class="card-body">
-                        <p><strong>Nome:</strong> ${dadosFormulario.nome || 'Não informado'}</p>
-                        <p><strong>Telefone:</strong> ${dadosFormulario.telefone || 'Não informado'}</p>
-                        <p><strong>Data de Nascimento:</strong> ${formatarData(dadosFormulario['data-nascimento'])}</p>
-                        <p><strong>Sexo:</strong> ${mapeamentos.sexo[dadosFormulario.sexo] || 'Não informado'}</p>
-                    </div>
-                </div>
-                
-                <div class="card mb-3">
-                    <div class="card-header bg-success text-white">
-                        <h6 class="mb-0"><i class="fas fa-id-card me-2"></i>Documentação</h6>
-                    </div>
-                    <div class="card-body">
-                        <p><strong>CPF:</strong> ${dadosFormulario.cpf || 'Não informado'}</p>
-                        <p><strong>Data Emissão RG:</strong> ${formatarData(dadosFormulario['data-emissao'])}</p>
-                        <p><strong>Órgão Emissor:</strong> ${dadosFormulario['orgao-emissor'] || 'Não informado'}</p>
-                    </div>
-                </div>
-                
-                <div class="card mb-3">
-                    <div class="card-header bg-warning text-dark">
-                        <h6 class="mb-0"><i class="fas fa-map-marker-alt me-2"></i>Endereço</h6>
-                    </div>
-                    <div class="card-body">
-                        <p><strong>Endereço:</strong> ${dadosFormulario.endereco || 'Não informado'}</p>
-                        <p><strong>Bairro:</strong> ${dadosFormulario.bairro || 'Não informado'}</p>
-                        <p><strong>Referência:</strong> ${dadosFormulario.referencia || 'Não informado'}</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-6">
-                <div class="card mb-3">
-                    <div class="card-header bg-info text-white">
-                        <h6 class="mb-0"><i class="fas fa-users me-2"></i>Informações Familiares</h6>
-                    </div>
-                    <div class="card-body">
-                        <p><strong>Estado Civil:</strong> ${mapeamentos['estado-civil'][dadosFormulario['estado-civil']] || 'Não informado'}</p>
-                        <p><strong>Nome da Mãe:</strong> ${dadosFormulario.mae || 'Não informado'}</p>
-                        <p><strong>Nome do Pai:</strong> ${dadosFormulario.pai || 'Não informado'}</p>
-                        <p><strong>Nível de Formação:</strong> ${mapeamentos['nivel-formacao'][dadosFormulario['nivel-formacao']] || 'Não informado'}</p>
-                        <p><strong>Profissão:</strong> ${dadosFormulario.profissao || 'Não informado'}</p>
-                    </div>
-                </div>
-                
-                <div class="card mb-3">
-                    <div class="card-header bg-secondary text-white">
-                        <h6 class="mb-0"><i class="fas fa-chart-line me-2"></i>Situação Socioeconômica</h6>
-                    </div>
-                    <div class="card-body">
-                        <p><strong>Renda:</strong> ${formatarRenda(dadosFormulario.renda)}</p>
-                        <p><strong>Possui Deficiência:</strong> ${dadosFormulario.deficiente === 'def-sim' ? 'Sim' : 'Não'}</p>
-                        <p><strong>Qual Deficiência:</strong> ${dadosFormulario.deficiencia || 'Não informado'}</p>
-                        <p><strong>CAD ÚNICO:</strong> ${dadosFormulario['familia-cad-unico'] === 'fam-sim' ? 'Sim' : 'Não'}</p>
-                        <p><strong>Benefício Social:</strong> ${mapeamentos['beneficio-social'][dadosFormulario['beneficio-social']] || 'Não informado'}</p>
-                        <p><strong>Aposentado:</strong> ${dadosFormulario.aposentadoria === 'aposentado' ? 'Sim' : 'Não'}</p>
-                    </div>
-                </div>
-                
-                <div class="card mb-3">
-                    <div class="card-header bg-dark text-white">
-                        <h6 class="mb-0"><i class="fas fa-certificate me-2"></i>Benefícios e Documentos</h6>
-                    </div>
-                    <div class="card-body">
-                        <p><strong>Passe Inter-municipal:</strong> ${dadosFormulario['passe-intermunicipal'] === 'pim-sim' ? 'Sim' : 'Não'}</p>
-                        <p><strong>Passe Inter-estadual:</strong> ${dadosFormulario['passe-interestadual'] === 'pie-sim' ? 'Sim' : 'Não'}</p>
-                        <p><strong>Carteira de Autista:</strong> ${dadosFormulario['carteira-autista'] === 'carteira-autista-sim' ? 'Sim' : 'Não'}</p>
-                        <p><strong>Laudo Médico:</strong> ${dadosFormulario.laudo === 'laudo-sim' ? 'Sim' : 'Não'}</p>
-                        <p><strong>Observações do Laudo:</strong> ${dadosFormulario.observacao || 'Não informado'}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="alert alert-warning">
-            <i class="fas fa-exclamation-triangle me-2"></i>
-            <strong>Atenção:</strong> Após enviar o formulário, você não poderá mais editar as informações. 
-            Certifique-se de que todos os dados estão corretos antes de prosseguir.
-        </div>
-    `;
-    
-    conteudoResumo.innerHTML = html;
-    
-    // Mostrar modal
-    const modal = new bootstrap.Modal(document.getElementById('modalResumo'));
-    modal.show();
-}
 
 // Formatar data
 function formatarData(data) {
@@ -500,27 +376,7 @@ function baixarDados() {
 
 // Enviar formulário
 function enviarFormulario() {
-    // Simular envio
-    const btnEnviar = document.querySelector('[onclick="enviarFormulario()"]');
-    const textoOriginal = btnEnviar.innerHTML;
-    
-    btnEnviar.disabled = true;
-    btnEnviar.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Enviando...';
-    
-    setTimeout(() => {
-        // Fechar modal de resumo
-        const modalResumo = bootstrap.Modal.getInstance(document.getElementById('modalResumo'));
-        modalResumo.hide();
-        
-        // Mostrar modal de sucesso
-        const modalSucesso = new bootstrap.Modal(document.getElementById('modalSucesso'));
-        modalSucesso.show();
-        
-        // Limpar dados salvos
-        localStorage.removeItem('formulario-cras-dados');
-        
-        btnEnviar.disabled = false;
-        btnEnviar.innerHTML = textoOriginal;
-    }, 2000);
+    // Envio real do formulário
+    document.getElementById('formulario-cras').submit();
 }
 

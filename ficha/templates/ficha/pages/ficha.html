@@ -50,7 +50,8 @@
                 </div>
             </div>
             <!-- Formulário -->
-            <form id="formulario-cras" novalidate>
+            <form id="formulario-cras" method="post" action="{% url 'ficha_view' %}" novalidate>
+                {% csrf_token %}
                 <!-- Etapa 1: Dados Pessoais -->
                 <div class="etapa-content" id="etapa-1">
                     <div class="card shadow-sm">
@@ -63,6 +64,11 @@
                                     <label for="nome" class="form-label">Nome Completo *</label>
                                     <input type="text" class="form-control" id="nome" name="nome" placeholder="Digite seu nome completo" required>
                                     <div class="invalid-feedback">Por favor, informe seu nome.</div>
+                                </div>
+                                <div class="col-12">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="Digite seu email">
+                                    <div class="invalid-feedback">Por favor, informe um email válido.</div>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="telefone" class="form-label">Telefone *</label>
@@ -104,6 +110,11 @@
                                     <label for="cpf" class="form-label">CPF *</label>
                                     <input type="text" class="form-control" id="cpf" name="cpf" placeholder="000.000.000-00" maxlength="14" required>
                                     <div class="invalid-feedback">Informe um CPF válido.</div>
+                                </div>
+                                <div class="col-12">
+                                    <label for="rg" class="form-label">RG *</label>
+                                    <input type="text" class="form-control" id="rg" name="rg" placeholder="000.000.000-0" maxlength="14" required>
+                                    <div class="invalid-feedback">Informe um RG válido.</div>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="data-emissao" class="form-label">Data da Emissão do RG *</label>
@@ -376,63 +387,13 @@
                     <i class="fas fa-chevron-left me-2"></i>Anterior
                 </button>
                 <button type="button" class="btn btn-primary btn-lg" id="btn-proximo">
-                    Próximo<i class="fas fa-chevron-right ms-2"></i>
+                    Enviar<i class="fas fa-paper-plane ms-2"></i>
                 </button>
             </div>
             <!-- Rodapé -->
             <footer class="text-center mt-5 pt-4 border-top">
                 <p class="text-muted">&copy; 2025 Ficha de identificação CRAS. Todos os direitos reservados.</p>
             </footer>
-        </div>
-    </div>
-    <!-- Modal de Resumo -->
-    <div class="modal fade" id="modalResumo" tabindex="-1" aria-labelledby="modalResumoLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title" id="modalResumoLabel">
-                        <i class="fas fa-clipboard-check me-2"></i>Resumo dos Dados
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body" id="conteudo-resumo">
-                    <!-- Conteúdo será preenchido via JavaScript -->
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" onclick="baixarDados()">
-                        <i class="fas fa-download me-2"></i>Baixar Dados
-                    </button>
-                    <button type="button" class="btn btn-success" onclick="enviarFormulario()">
-                        <i class="fas fa-paper-plane me-2"></i>Enviar Formulário
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Modal de Sucesso -->
-    <div class="modal fade" id="modalSucesso" tabindex="-1" aria-labelledby="modalSucessoLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header bg-success text-white">
-                    <h5 class="modal-title" id="modalSucessoLabel">
-                        <i class="fas fa-check-circle me-2"></i>Formulário Enviado!
-                    </h5>
-                </div>
-                <div class="modal-body text-center">
-                    <i class="fas fa-check-circle text-success mb-3" style="font-size: 4rem;"></i>
-                    <h4 class="text-success">Sucesso!</h4>
-                    <p class="lead">Sua ficha de identificação foi enviada para o CRAS.</p>
-                    <p>Em breve você receberá um retorno sobre seu cadastro.</p>
-                    <div class="alert alert-info">
-                        <strong>Próximos passos:</strong> Aguarde o contato da equipe do CRAS. Mantenha seus documentos atualizados e disponíveis para apresentação quando solicitado.
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" onclick="location.reload()">
-                        <i class="fas fa-redo me-2"></i>Novo Cadastro
-                    </button>
-                </div>
-            </div>
         </div>
     </div>
 {% endblock content %}
