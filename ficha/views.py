@@ -9,7 +9,7 @@ def ficha_view(request):
     Renderizando e salvando a ficha de identificação do CRAS.
     """
     if request.method == 'POST':
-        print('POST recebido! Dados:', request.POST)
+        # print('POST recebido! Dados:', request.POST)
         ficha = FichaIdentificacao(
             nome=request.POST.get('nome'),
             email=request.POST.get('email', ''),
