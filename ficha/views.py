@@ -39,9 +39,13 @@ def ficha_view(request):
             livre_cultura=request.POST.get('livre_cultura', 'Não'),
             laudo=request.POST.get('laudo'),
         )
-        # Salva o arquivo PDF enviado em 'observacao', se houver
-        if request.FILES.get('observacao'):
-            ficha.observacao = request.FILES['observacao']
+        # Salva o arquivo PDF enviado em 'observacao', se houver e for PDF
+        file_observacao = request.FILES.get('observacao')
+        if file_observacao:
+            if file_observacao.content_type == 'application/pdf':
+                ficha.observacao = file_observacao
+            else:
+                pass  # Ignora arquivos que não são PDF
         ficha.save()
         print('Ficha salva com sucesso!')
         # Crie uma URL para página de sucesso

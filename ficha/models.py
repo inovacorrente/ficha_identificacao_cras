@@ -115,5 +115,14 @@ class FichaIdentificacao(models.Model):
         verbose_name='Observações do Laudo (PDF)'
     )
 
+    def save(self, *args, **kwargs):
+        if self.pk:
+            old = FichaIdentificacao.objects.get(pk=self.pk)
+            if old.observacao and self.observacao != old.observacao:
+                from django.core.exceptions import ValidationError
+                raise ValidationError(
+                    "Não é permitido atualizar o arquivo do laudo (observação) após o envio inicial.")
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.nome
