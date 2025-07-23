@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+    {% include 'partial/head.html' %}
+    <title>{% block title %}{% endblock title %} - CRAS</title>
+</head>
+<body>
+    {% block content %}
+
+    {% endblock content %}
+</body>
+
+{% include 'partial/footer.html' %}
+</html>

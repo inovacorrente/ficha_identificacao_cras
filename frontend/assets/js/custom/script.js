@@ -87,7 +87,7 @@ function configurarCamposCondicionais() {
     // Campo deficiência
     document.getElementById('deficiente').addEventListener('change', function() {
         const campoDeficiencia = document.getElementById('deficiencia');
-        if (this.value === 'def-sim') {
+        if (this.value === 'Sim') {
             campoDeficiencia.disabled = false;
             campoDeficiencia.required = true;
         } else {
