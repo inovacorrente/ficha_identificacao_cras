@@ -50,7 +50,7 @@
                 </div>
             </div>
             <!-- Formulário -->
-            <form id="formulario-cras" method="post" action="{% url 'ficha_view' %}" novalidate>
+            <form id="formulario-cras" method="post" action="{% url 'ficha_view' %}" enctype="multipart/form-data" novalidate>
                 {% csrf_token %}
                 <!-- Etapa 1: Dados Pessoais -->
                 <div class="etapa-content" id="etapa-1">
@@ -362,6 +362,14 @@
                                     <div class="invalid-feedback">Informe sobre carteira de autista.</div>
                                 </div>
                                 <div class="col-md-6">
+                                    <label for="livre-cultura" class="form-label">Possui Livre Cultura?</label>
+                                    <select class="form-select" id="livre-cultura" name="livre_cultura" required>
+                                        <option value="" selected disabled>Selecionar</option>
+                                        <option value="Não">Não</option>
+                                        <option value="Sim">Sim</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
                                     <label for="laudo" class="form-label">Possui Laudo Médico? *</label>
                                     <select class="form-select" id="laudo" name="laudo" required>
                                         <option value="" selected disabled>Selecionar</option>
@@ -370,10 +378,10 @@
                                     </select>
                                     <div class="invalid-feedback">Informe sobre laudo médico.</div>
                                 </div>
-                                <div class="col-12">
-                                    <label for="observacao" class="form-label">Observações do Laudo (se possuir)</label>
-                                    <textarea class="form-control" id="observacao" name="observacao" rows="4" placeholder="Descreva informações relevantes do laudo médico..." disabled></textarea>
-                                    <div class="form-text">Campo habilitado apenas se possuir laudo médico</div>
+                                <div class="col-md-6">
+                                    <label for="observacao" class="form-label">Observações do Laudo (PDF)</label>
+                                    <input type="file" class="form-control" id="observacao" name="observacao" accept="application/pdf" disabled>
+                                    <div class="form-text">Envie o PDF das observações do laudo médico. Campo habilitado apenas se possuir laudo médico.</div>
                                 </div>
                             </div>
                             <div class="alert alert-info mt-4" style="background-color: #e8f4fd; border-color: #bee5eb;">

@@ -29,6 +29,8 @@ function preencherFormulario() {
     Object.keys(dadosFormulario).forEach(campo => {
         const elemento = document.getElementById(campo) || document.querySelector(`[name="${campo}"]`);
         if (elemento) {
+            // Não tentar preencher campos do tipo file
+            if (elemento.type === 'file') return;
             elemento.value = dadosFormulario[campo];
         }
     });
@@ -168,6 +170,31 @@ function configurarCamposCondicionais() {
             }
         });
     }
+
+    // Verificação de PDF no campo observacao
+    const campoObservacao = document.getElementById('observacao');
+    if (campoObservacao) {
+        campoObservacao.addEventListener('change', function() {
+            // Remove mensagem de erro anterior
+            let msg = campoObservacao.parentElement.querySelector('.custom-error-msg-pdf');
+            if (msg) msg.remove();
+            let isPdf = true;
+            if (campoObservacao.files && campoObservacao.files.length > 0) {
+                const file = campoObservacao.files[0];
+                if (file.type !== 'application/pdf') {
+                    isPdf = false;
+                }
+            }
+            if (!isPdf) {
+                campoObservacao.value = '';
+                const msg = document.createElement('div');
+                msg.className = 'custom-error-msg-pdf text-danger mt-1';
+                msg.innerText = 'Só é permitido enviar arquivos PDF.';
+                campoObservacao.parentElement.appendChild(msg);
+            }
+            checarEnvioPermitido();
+        });
+    }
 }
 
 // Salvar dados no localStorage
@@ -187,8 +214,12 @@ function configurarValidacaoTempo() {
     document.querySelectorAll('input[required], select[required]').forEach(campo => {
         campo.addEventListener('blur', function() {
             validarCampo(this);
+            checarEnvioPermitido();
         });
+        campo.addEventListener('input', checarEnvioPermitido);
+        campo.addEventListener('change', checarEnvioPermitido);
     });
+    checarEnvioPermitido();
 }
 
 // Validar campo individual
@@ -232,12 +263,49 @@ function validarCampo(campo) {
     if (valido) {
         campo.classList.remove('is-invalid');
         campo.classList.add('is-valid');
+        // Remove mensagem customizada se existir
+        let msg = campo.parentElement.querySelector('.custom-error-msg');
+        if (msg) msg.remove();
     } else {
         campo.classList.remove('is-valid');
         campo.classList.add('is-invalid');
+        // Adiciona mensagem customizada se não existir
+        let msg = campo.parentElement.querySelector('.custom-error-msg');
+        if (!msg) {
+            msg = document.createElement('div');
+            msg.className = 'custom-error-msg text-danger mt-1';
+            msg.innerText = 'Preencha este campo corretamente.';
+            campo.parentElement.appendChild(msg);
+        }
     }
-    
     return valido;
+}
+
+// Habilita/desabilita o botão de envio conforme a validação dos campos obrigatórios
+function checarEnvioPermitido() {
+    const btnProximo = document.getElementById('btn-proximo');
+    let podeEnviar = true;
+    if (etapaAtual === totalEtapas) {
+        const etapaElement = document.getElementById(`etapa-${etapaAtual}`);
+        const camposObrigatorios = etapaElement.querySelectorAll('input[required], select[required]');
+        camposObrigatorios.forEach(campo => {
+            if (campo.disabled) return;
+            if (campo.tagName === 'SELECT') {
+                if (!campo.value || campo.value === '' || campo.selectedIndex === 0 || campo.options[campo.selectedIndex].disabled) {
+                    podeEnviar = false;
+                }
+            } else if (campo.type === 'file') {
+                if (!campo.files || campo.files.length === 0) {
+                    podeEnviar = false;
+                }
+            } else {
+                if (!campo.value || campo.value.trim() === '' || campo.classList.contains('is-invalid')) {
+                    podeEnviar = false;
+                }
+            }
+        });
+    }
+    if (btnProximo) btnProximo.disabled = !podeEnviar;
 }
 
 // Validar CPF
@@ -320,7 +388,13 @@ function proximaEtapa() {
             valor = valor.replace('.', '').replace(',', '.');
             campoRenda.value = valor;
         }
-        // Apenas submete o formulário, sem limpar antes
+        // Checagem final antes de enviar
+        checarEnvioPermitido();
+        const btnProximo = document.getElementById('btn-proximo');
+        if (btnProximo && btnProximo.disabled) {
+            mostrarErrosValidacao();
+            return;
+        }
         document.getElementById('formulario-cras').submit();
     }
 }
@@ -391,10 +465,11 @@ function atualizarInterface() {
     
     if (btnProximo) {
         if (etapaAtual === totalEtapas) {
-            btnProximo.innerHTML = 'Revisar Dados<i class="fas fa-clipboard-check ms-2"></i>';
+            btnProximo.innerHTML = 'Enviar Informações<i class="fas fa-clipboard-check ms-2"></i>';
         } else {
             btnProximo.innerHTML = 'Próximo<i class="fas fa-chevron-right ms-2"></i>';
         }
+        checarEnvioPermitido();
     }
 }
 
