@@ -1,4 +1,3 @@
-
 from django.shortcuts import redirect, render
 
 from .models import FichaIdentificacao
@@ -49,6 +48,5 @@ def ficha_view(request):
 
 def ficha_sucesso_view(request):
     """
-    Renderizando a página de sucesso após o envio da ficha.
     """
     return render(request, 'ficha/pages/sucesso.html')
