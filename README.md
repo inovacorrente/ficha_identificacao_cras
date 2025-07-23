@@ -17,7 +17,32 @@ Este projeto é um sistema web para cadastro e gerenciamento de fichas de identi
 ```
 
 ## Pré-requisitos
+  
+## Configuração do .env
 
+
+Para variáveis sensíveis (como chaves secretas, configurações de banco de dados, etc.), utilize um arquivo `.env` na raiz do projeto. 
+
+Já existe um arquivo de exemplo chamado `.env.example`. Para começar, basta copiá-lo:
+
+```bash
+cp .env.example .env
+```
+
+Depois, edite o `.env` conforme necessário.
+
+O Django pode ser configurado para ler essas variáveis usando pacotes como `python-dotenv` ou `django-environ`.
+
+**Exemplo de um arquivo `.env`:**
+```
+SECRET_KEY=sua_chave_secreta_aqui
+DEBUG=True
+ALLOWED_HOSTS=127.0.0.1,localhost,0.0.0.0
+```
+
+> Lembre-se de nunca versionar o `.env` (adicione ao `.gitignore`).
+
+Se necessário, adapte o código em `core/settings.py` para ler as variáveis do `.env`.
 - Python 3.12+
 - pip
 - (Opcional) Docker e Docker Compose
