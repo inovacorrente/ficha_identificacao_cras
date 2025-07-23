@@ -36,9 +36,12 @@ def ficha_view(request):
             passe_intermunicipal=request.POST.get('passe-intermunicipal'),
             passe_interestadual=request.POST.get('passe-interestadual'),
             carteira_autista=request.POST.get('carteira-autista'),
+            livre_cultura=request.POST.get('livre_cultura', 'Não'),
             laudo=request.POST.get('laudo'),
-            observacao=request.POST.get('observacao', '')
         )
+        # Salva o arquivo PDF enviado em 'observacao', se houver
+        if request.FILES.get('observacao'):
+            ficha.observacao = request.FILES['observacao']
         ficha.save()
         print('Ficha salva com sucesso!')
         # Crie uma URL para página de sucesso

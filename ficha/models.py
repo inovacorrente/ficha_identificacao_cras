@@ -1,4 +1,7 @@
 
+
+import uuid
+
 from django.db import models
 
 OPTIONS_SEXO = [
@@ -51,7 +54,17 @@ OPTION = [
 ]
 
 
+def laudo_upload_path(instance, filename):
+    # Salva o arquivo em laudos/<codigo>/<filename>
+    return f"laudos/{instance.codigo}/{filename}"
+
+
 class FichaIdentificacao(models.Model):
+
+    codigo = models.UUIDField(
+        default=uuid.uuid4, editable=False, unique=True,
+        help_text='Código único da ficha', verbose_name='Código'
+    )
     # Etapa 1: Dados Pessoais
     nome = models.CharField(max_length=255)
     email = models.EmailField(max_length=255, blank=True, null=True)
@@ -92,8 +105,15 @@ class FichaIdentificacao(models.Model):
     passe_intermunicipal = models.CharField(max_length=10, choices=OPTION)
     passe_interestadual = models.CharField(max_length=10, choices=OPTION)
     carteira_autista = models.CharField(max_length=20, choices=OPTION)
+    livre_cultura = models.CharField(
+        max_length=10, choices=OPTION, default='Não')
     laudo = models.CharField(max_length=10, choices=OPTION)
-    observacao = models.TextField(blank=True, null=True)
+    observacao = models.FileField(
+        upload_to=laudo_upload_path,
+        blank=True,
+        null=True,
+        verbose_name='Observações do Laudo (PDF)'
+    )
 
     def __str__(self):
         return self.nome
