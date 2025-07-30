@@ -1,10 +1,15 @@
+version: '3.8'
+
 services:
   web:
     build: .
-    command: sh -c "python manage.py migrate && DJANGO_SETTINGS_MODULE=core.settings python create_superuser.py && python manage.py runserver 0.0.0.0:8000"
     ports:
       - "8000:8000"
     env_file:
       - .env
     volumes:
-      - .:/app
+      - ./media:/app/media
+      - ./laudos:/app/laudos
+    environment:
+      - DJANGO_SETTINGS_MODULE=core.settings
+    restart: unless-stopped
