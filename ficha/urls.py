@@ -5,4 +5,5 @@ from . import views
 urlpatterns = [
     path('', views.ficha_view, name='ficha_view'),
     path('sucesso/', views.ficha_sucesso_view, name='ficha_sucesso_view'),
+    path('csrf-token/', views.obter_csrf_token, name='obter_csrf_token'),
 ]

@@ -1,10 +1,49 @@
+version: '3.8'
+
 services:
   web:
     build: .
-    command: sh -c "python manage.py migrate && DJANGO_SETTINGS_MODULE=core.settings python create_superuser.py && python manage.py runserver 0.0.0.0:8000"
     ports:
       - "8000:8000"
     env_file:
       - .env
     volumes:
-      - .:/app
+      # Volumes de dados da aplicação
+      - ./media:/app/media
+      - ./laudos:/app/laudos
+      # Volumes do sistema de backup
+      - ./backups:/app/backups
+      - ./logs:/app/logs
+      # Volume do banco de dados
+      - ./db.sqlite3:/app/db.sqlite3
+    environment:
+      - DJANGO_SETTINGS_MODULE=core.settings
+      - BACKUP_ENABLED=true
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/", "||", "exit", "1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # Serviço adicional para monitoramento de backups (opcional)
+  backup-monitor:
+    build: .
+    volumes:
+      - ./backups:/app/backups
+      - ./logs:/app/logs
+    environment:
+      - DJANGO_SETTINGS_MODULE=core.settings
+    command: ["tail", "-f", "/app/logs/backup.log"]
+    depends_on:
+      - web
+    restart: unless-stopped
+    profiles:
+      - monitoring
+
+volumes:
+  backups:
+    driver: local
+  logs:
+    driver: local

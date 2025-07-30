@@ -1,18 +1,41 @@
-# Dockerfile simples para Django
+# Dockerfile para Django com Sistema de Backup
 FROM python:3.12-slim
 
+# Instalar dependências do sistema incluindo cron e sqlite3
+RUN apt-get update && apt-get install -y \
+    gcc \
+    cron \
+    sqlite3 \
+    tar \
+    gzip \
+    logrotate \
+    && rm -rf /var/lib/apt/lists/*
+
+# Definir diretório de trabalho
 WORKDIR /app
 
+# Copiar e instalar dependências Python
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Instalar python-dotenv para ler variáveis do .env
-RUN pip install python-dotenv
-
+# Copiar código da aplicação
 COPY . .
 
+# Configurar variáveis de ambiente
 ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
 
-# Comando padrão: migrar, criar superusuário e rodar servidor
-# O .env será carregado automaticamente pelo python-dotenv (se usado no settings.py)
-CMD ["sh", "-c", "python manage.py migrate && DJANGO_SETTINGS_MODULE=core.settings python create_superuser.py && python manage.py runserver 0.0.0.0:8000"]
+# Criar diretórios necessários
+RUN mkdir -p /app/media /app/static /app/logs /app/backups
+
+# Configurar permissões dos scripts
+RUN chmod +x /app/scripts/*.sh
+
+# Configurar cron para backups usando script Docker
+RUN echo "0 2 * * * /app/scripts/backup-docker.sh >> /app/logs/backup.log 2>&1" | crontab -
+
+# Expor porta
+EXPOSE 8000
+
+# Script de inicialização
+CMD ["/app/scripts/docker-entrypoint.sh"]
