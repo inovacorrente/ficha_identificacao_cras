@@ -7,6 +7,12 @@ Dockerfile
 docker-compose.yml
 .dockerignore
 
+# Backup system (will be created in container)
+backups/
+*.tar.gz
+logs/
+*.log
+
 # Python
 __pycache__
 *.pyc
