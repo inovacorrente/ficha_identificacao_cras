@@ -113,8 +113,8 @@
                                 </div>
                                 <div class="col-12">
                                     <label for="rg" class="form-label">RG *</label>
-                                    <input type="text" class="form-control" id="rg" name="rg" placeholder="000.000.000-0" maxlength="14" required>
-                                    <div class="invalid-feedback">Informe um RG válido.</div>
+                                    <input type="text" class="form-control" id="rg" name="rg" placeholder="0.000.000 ou 000.000.000-00" maxlength="15" required>
+                                    <div class="invalid-feedback">Informe um RG válido (formato antigo: 0.000.000 ou novo: 000.000.000-00).</div>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="data-emissao" class="form-label">Data da Emissão do RG *</label>
@@ -398,11 +398,16 @@
             </form>
             <!-- Botões de Navegação -->
             <div class="d-flex justify-content-between mt-4">
-                <button type="button" class="btn btn-outline-secondary btn-lg" id="btn-anterior" disabled>
-                    <i class="fas fa-chevron-left me-2"></i>Anterior
-                </button>
+                <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-outline-secondary btn-lg" id="btn-anterior" disabled>
+                        <i class="fas fa-chevron-left me-2"></i><span class="d-none d-sm-inline">Anterior</span><span class="d-sm-none">Ant.</span>
+                    </button>
+                    <button type="button" class="btn btn-outline-danger btn-lg btn-limpar" id="btn-limpar" title="Limpar todos os dados do formulário e renovar token de segurança">
+                        <i class="fas fa-trash-alt me-2"></i><span class="d-none d-sm-inline">Limpar Formulário</span><span class="d-sm-none">Limpar</span>
+                    </button>
+                </div>
                 <button type="button" class="btn btn-primary btn-lg" id="btn-proximo">
-                    Enviar<i class="fas fa-paper-plane ms-2"></i>
+                    <span class="d-none d-sm-inline">Enviar</span><span class="d-sm-none">OK</span><i class="fas fa-paper-plane ms-2"></i>
                 </button>
             </div>
             <!-- Rodapé -->

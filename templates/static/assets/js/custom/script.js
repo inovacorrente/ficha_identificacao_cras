@@ -44,6 +44,10 @@ function configurarEventListeners() {
     const btnProximo = document.getElementById('btn-proximo');
     if (btnProximo) btnProximo.addEventListener('click', proximaEtapa);
     
+    // Botão limpar formulário
+    const btnLimpar = document.getElementById('btn-limpar');
+    if (btnLimpar) btnLimpar.addEventListener('click', limparFormulario);
+    
     // Botões de etapa
     document.querySelectorAll('.btn-etapa').forEach(btn => {
         btn.addEventListener('click', function() {
@@ -74,6 +78,29 @@ function configurarFormatacao() {
             let valor = e.target.value.replace(/\D/g, '');
             if (valor.length <= 11) {
                 valor = valor.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+                e.target.value = valor;
+            }
+        });
+    }
+
+    // Formatação do RG
+    const campoRG = document.getElementById('rg');
+    if (campoRG) {
+        campoRG.addEventListener('input', function(e) {
+            let valor = e.target.value.replace(/\D/g, '');
+            if (valor.length <= 11) {
+                // Formato novo: 000.000.000-00 (11 dígitos)
+                if (valor.length >= 9) {
+                    valor = valor.replace(/(\d{3})(\d{3})(\d{3})(\d{0,2})/, '$1.$2.$3-$4');
+                } 
+                // Formato antigo: 0.000.000 (7 dígitos)
+                else if (valor.length >= 4 && valor.length <= 7) {
+                    valor = valor.replace(/(\d{1})(\d{3})(\d{0,3})/, '$1.$2.$3');
+                }
+                // Formatação parcial
+                else if (valor.length >= 1 && valor.length <= 3) {
+                    // Deixa sem formatação até ter mais dígitos
+                }
                 e.target.value = valor;
             }
         });
@@ -230,6 +257,8 @@ function validarCampo(campo) {
     // Validações específicas
     if (campo.id === 'cpf') {
         valido = validarCPF(valor);
+    } else if (campo.id === 'rg') {
+        valido = validarRG(valor);
     } else if (campo.id === 'telefone') {
         valido = validarTelefone(valor);
     } else if (campo.id === 'renda') {
@@ -338,6 +367,29 @@ function validarCPF(cpf) {
 function validarTelefone(telefone) {
     const apenasNumeros = telefone.replace(/\D/g, '');
     return apenasNumeros.length === 10 || apenasNumeros.length === 11;
+}
+
+// Validar RG
+function validarRG(rg) {
+    // Remove caracteres não numéricos
+    const apenasNumeros = rg.replace(/\D/g, '');
+    
+    // Formato antigo: 7 dígitos (0.000.000)
+    if (apenasNumeros.length === 7) {
+        // Verifica se não são todos os dígitos iguais
+        if (/^(\d)\1{6}$/.test(apenasNumeros)) return false;
+        return true;
+    }
+    
+    // Formato novo: 11 dígitos (000.000.000-00)
+    if (apenasNumeros.length === 11) {
+        // Verifica se não são todos os dígitos iguais
+        if (/^(\d)\1{10}$/.test(apenasNumeros)) return false;
+        return true;
+    }
+    
+    // Se não tem 7 nem 11 dígitos, é inválido
+    return false;
 }
 
 // Validar etapa atual
@@ -465,9 +517,9 @@ function atualizarInterface() {
     
     if (btnProximo) {
         if (etapaAtual === totalEtapas) {
-            btnProximo.innerHTML = 'Enviar Informações<i class="fas fa-clipboard-check ms-2"></i>';
+            btnProximo.innerHTML = '<span class="d-none d-sm-inline">Enviar Informações</span><span class="d-sm-none">Enviar</span><i class="fas fa-clipboard-check ms-2"></i>';
         } else {
-            btnProximo.innerHTML = 'Próximo<i class="fas fa-chevron-right ms-2"></i>';
+            btnProximo.innerHTML = '<span class="d-none d-sm-inline">Próximo</span><span class="d-sm-none">OK</span><i class="fas fa-chevron-right ms-2"></i>';
         }
         checarEnvioPermitido();
     }
@@ -523,8 +575,237 @@ function baixarDados() {
 }
 
 // Enviar formulário
-function enviarFormulario() {
+async function enviarFormulario() {
+    // Verificar e renovar token CSRF se necessário
+    const tokenValido = await verificarTokenCSRF();
+    
+    if (!tokenValido) {
+        // Se não conseguiu obter token válido, mostrar erro
+        const alertDiv = document.createElement('div');
+        alertDiv.className = 'alert alert-danger alert-dismissible fade show mt-3';
+        alertDiv.innerHTML = `
+            <i class="fas fa-exclamation-circle me-2"></i>
+            <strong>Erro de segurança!</strong> Não foi possível validar o token de segurança. Por favor, recarregue a página e tente novamente.
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        
+        const container = document.querySelector('.container');
+        const firstCard = container.querySelector('.card');
+        if (firstCard) {
+            firstCard.parentNode.insertBefore(alertDiv, firstCard);
+            
+            setTimeout(() => {
+                if (alertDiv.parentNode) {
+                    alertDiv.remove();
+                }
+            }, 8000);
+        }
+        return;
+    }
+    
     // Envio real do formulário
     document.getElementById('formulario-cras').submit();
 }
 
+// Função para obter um novo token CSRF
+async function obterNovoTokenCSRF() {
+    try {
+        // Tentar usar o endpoint específico primeiro
+        const response = await fetch('/csrf-token/', {
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        });
+        
+        if (response.ok) {
+            const data = await response.json();
+            if (data.csrf_token) {
+                return data.csrf_token;
+            }
+        } else if (response.status === 429) {
+            // Rate limit excedido
+            const data = await response.json();
+            console.warn('Rate limit excedido:', data.error);
+            throw new Error('Muitas tentativas. Aguarde um momento.');
+        } else if (response.status === 403) {
+            console.warn('Acesso negado ao endpoint CSRF');
+            throw new Error('Acesso negado');
+        }
+        
+        // Fallback: obter token da página atual
+        const pageResponse = await fetch(window.location.href, {
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        });
+        
+        if (pageResponse.ok) {
+            const text = await pageResponse.text();
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(text, 'text/html');
+            const tokenElement = doc.querySelector('[name=csrfmiddlewaretoken]');
+            return tokenElement ? tokenElement.value : null;
+        }
+    } catch (error) {
+        console.warn('Erro ao obter novo token CSRF:', error);
+        throw error;
+    }
+    return null;
+}
+
+// Atualizar token CSRF no formulário
+async function atualizarTokenCSRF() {
+    const tokenElement = document.querySelector('[name=csrfmiddlewaretoken]');
+    if (tokenElement) {
+        try {
+            const novoToken = await obterNovoTokenCSRF();
+            if (novoToken) {
+                tokenElement.value = novoToken;
+                return { success: true, message: 'Token atualizado com sucesso' };
+            }
+            return { success: false, message: 'Não foi possível obter novo token' };
+        } catch (error) {
+            return { 
+                success: false, 
+                message: error.message || 'Erro ao atualizar token' 
+            };
+        }
+    }
+    return { success: false, message: 'Token CSRF não encontrado' };
+}
+
+// Limpar formulário e cache com renovação de token CSRF
+async function limparFormulario() {
+    // Confirmar ação com o usuário
+    if (confirm('Tem certeza de que deseja limpar todos os dados do formulário? Esta ação não pode ser desfeita.')) {
+        try {
+            // Mostrar indicador de carregamento
+            const btnLimpar = document.getElementById('btn-limpar');
+            const textoOriginal = btnLimpar.innerHTML;
+            btnLimpar.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i><span class="d-none d-sm-inline">Limpando...</span><span class="d-sm-none">...</span>';
+            btnLimpar.disabled = true;
+            
+            // Limpar localStorage
+            localStorage.removeItem('formulario-cras-dados');
+            dadosFormulario = {};
+            
+            // Limpar todos os campos do formulário
+            const formulario = document.getElementById('formulario-cras');
+            if (formulario) {
+                formulario.reset();
+            }
+            
+            // Limpar campos específicos que podem não ser resetados automaticamente
+            document.querySelectorAll('input, select, textarea').forEach(campo => {
+                // Não limpar o campo CSRF
+                if (campo.name === 'csrfmiddlewaretoken') {
+                    return;
+                }
+                
+                if (campo.type === 'file') {
+                    campo.value = '';
+                } else if (campo.type === 'checkbox' || campo.type === 'radio') {
+                    campo.checked = false;
+                } else {
+                    campo.value = '';
+                }
+                
+                // Remover classes de validação
+                campo.classList.remove('is-valid', 'is-invalid');
+            });
+            
+            // Desabilitar campos condicionais novamente
+            const observacaoField = document.getElementById('observacao');
+            const deficienciaField = document.getElementById('deficiencia');
+            if (observacaoField) observacaoField.disabled = true;
+            if (deficienciaField) deficienciaField.disabled = true;
+            
+            // Atualizar token CSRF para evitar problema de expiração
+            const tokenResult = await atualizarTokenCSRF();
+            
+            // Voltar para a primeira etapa
+            etapaAtual = 1;
+            irParaEtapa(1);
+            
+            // Atualizar interface
+            atualizarInterface();
+            
+            // Restaurar botão
+            btnLimpar.innerHTML = textoOriginal;
+            btnLimpar.disabled = false;
+            
+            // Mostrar mensagem de sucesso
+            const alertDiv = document.createElement('div');
+            if (tokenResult.success) {
+                alertDiv.className = 'alert alert-success alert-dismissible fade show mt-3';
+                alertDiv.innerHTML = `
+                    <i class="fas fa-check-circle me-2"></i>
+                    <strong>Formulário limpo!</strong> Todos os dados foram removidos e o token de segurança foi renovado.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                `;
+            } else {
+                alertDiv.className = 'alert alert-warning alert-dismissible fade show mt-3';
+                alertDiv.innerHTML = `
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <strong>Formulário limpo!</strong> Dados removidos, mas ${tokenResult.message}. Recarregue a página se tiver problemas ao enviar.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                `;
+            }
+            
+            // Inserir alerta no início do formulário
+            const container = document.querySelector('.container');
+            const firstCard = container.querySelector('.card');
+            if (firstCard) {
+                firstCard.parentNode.insertBefore(alertDiv, firstCard);
+                
+                // Remover alerta automaticamente após 5 segundos
+                setTimeout(() => {
+                    if (alertDiv.parentNode) {
+                        alertDiv.remove();
+                    }
+                }, 5000);
+            }
+            
+        } catch (error) {
+            console.error('Erro ao limpar formulário:', error);
+            
+            // Restaurar botão em caso de erro
+            const btnLimpar = document.getElementById('btn-limpar');
+            btnLimpar.innerHTML = '<i class="fas fa-trash-alt me-2"></i><span class="d-none d-sm-inline">Limpar Formulário</span><span class="d-sm-none">Limpar</span>';
+            btnLimpar.disabled = false;
+            
+            // Mostrar mensagem de erro
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'alert alert-warning alert-dismissible fade show mt-3';
+            alertDiv.innerHTML = `
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                <strong>Atenção!</strong> O formulário foi limpo, mas houve um problema ao renovar o token de segurança. Recarregue a página se tiver problemas ao enviar.
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            const container = document.querySelector('.container');
+            const firstCard = container.querySelector('.card');
+            if (firstCard) {
+                firstCard.parentNode.insertBefore(alertDiv, firstCard);
+                
+                setTimeout(() => {
+                    if (alertDiv.parentNode) {
+                        alertDiv.remove();
+                    }
+                }, 8000);
+            }
+        }
+    }
+}
+
+// Verificar e renovar token CSRF se necessário antes do envio
+async function verificarTokenCSRF() {
+    const tokenElement = document.querySelector('[name=csrfmiddlewaretoken]');
+    if (!tokenElement || !tokenElement.value) {
+        // Se não há token ou está vazio, tentar obter um novo
+        return await atualizarTokenCSRF();
+    }
+    return true;
+}
